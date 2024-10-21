@@ -9,7 +9,7 @@ This project is a continuation of my previous work on creating a transactional s
 3. Gain hands-on experience with modern data engineering solutions like Databricks and dbt to expand my skillset as an aspiring data engineer.
 
 🏢 Scenario:
-In financial institutions and service providers, effective data monetization is crucial for driving organizational direction and goals through data-driven solutions. This requires a well-designed system that caters to stakeholder needs. Ideally, every department should be able to integrate and customize the data solution (in this case, the data warehouse) by creating specific departmental data marts.
+In financial institutions and service providers, effective data democratization is crucial for driving organizational direction and goals through data-driven solutions. This requires a well-designed system that caters to stakeholder needs. Ideally, every department should be able to integrate and customize the data solution (in this case, the data warehouse) by creating specific departmental data marts.
 
 OLAP is particularly suited for this scenario as it prioritizes fast querying and analytical use cases. Implementing a star schema model further specializes the data warehouse to answer business questions through tailored fact models and related descriptive data in dimension models.
 
@@ -55,7 +55,7 @@ The data dictionary is shown below:
 | `merch_long`              | Longitude of the merchant's location          |
 | `is_fraud`                | Fraud flag (Target variable: 1 = Fraud, 0 = Not Fraud) |
 
-## 🏗️ Project Architecture
+## ⛏️ Project Architecture
 The project leverages several key technologies to create a robust OLAP system:
 
 ![Transaction Batch Process Architecture](./images/OLAP_Architecture.jpg)
@@ -86,8 +86,8 @@ Spark processing is utilized in two key areas:
 1. Data Extraction and Transfer:
 
 - Spark runs in dockerized mode to extract data from MongoDB and transfer it to the S3 bucket.
-- The process is detailed in [mongo_to_spark_to_s3.ipynb](./S3bucket/ApacheSpark/mongo_to_spark_to_s3.ipynb).
-- After data migration, Databricks is set up and the S3 storage is mounted in the Databricks workspace using [setup_s3_conn.py](./databricks/setup_s3_conn.py)
+- The process with sample script in [mongo_to_spark_to_s3.ipynb](./S3bucket/ApacheSpark/mongo_to_spark_to_s3.ipynb).
+- After data migration, Databricks is set up and the S3 storage is mounted in the Databricks workspace using [setup_s3_conn.py](./Databricks/setup_s3_conn.py)
 
 Key points:
 - ensure to have matching JAR package file for Spark-AWS S3 connection
@@ -116,23 +116,23 @@ Resulting tables in each schema are saved in the Databricks-provisioned S3 bucke
 The Databricks-provisioned S3 bucket serves as the main storage for this OLAP project. Leveraging Delta Lake, a powerful lakehouse feature, it enables optimized storage governed by a unity catalog. The object storage model of S3 aligns well with the medallion architecture, treating each stored table as a separate object, ensuring modularity and isolation between medal layers.
 
 ### Visualization
-PowerBI is employed for data visualization. The implemented dashboard provides a comprehensive overview of credit card transaction data, including customer demographics, location information, and key business metrics. An exception report is also included to facilitate drill-down analysis of fraudulent activities and their details. Refer to ![Credit_card_goal2.pbix](./PowerBI/Credit_card_goal2.pbix) for the sample dashboard created.
+PowerBI is used for data visualization. The implemented dashboard provides a comprehensive overview of credit card transaction data, including customer demographics, location information, and key business metrics. An exception report is also included to facilitate drill-down analysis of fraudulent activities and their details. Refer to ![Credit_card_goal2.pbix](./PowerBI/Credit_card_goal2.pbix) for the sample dashboard created.
 
 
 ## 🪧Project Demo Highlights
 
 0. Data Model Setup
-- It is essential to setup a model as the final gold layer depends very much on this design. Generally, for a fact table, it usually contain all measurements by stakeholder interest (usually datatype is continuous). For dimension tables, it is descriptive of what the attribute in fact table is all about.
-- In this project, I have lay out few potential business questions to start constructing the fact table and created the star schema model below. Refer [Sample_business_requirement.pdf](./Sample_business_requirement.pdf) for guidance on how I select fact dimension using business key metrics.
+- It is essential to setup a model as the final gold layer depends very much on this design. Generally, for a fact table, it usually contains all measurements by stakeholder interest (usually datatype is type of continuous numerical data). For dimension tables, it is descriptive of what the attribute in fact table is all about.
+- In this project, I have proposed potential business questions to start constructing the fact table and created the star schema model below. Refer [Sample_business_requirement.pdf](./Sample_business_requirement.pdf) for guidance on how I select fact dimension using business key metrics.
 
-![star schema](./images/star_schema_powerbi.png)
+[star schema](./images/star_schema_powerbi.png)
 
 1. S3 Bucket Setup and Naming Conventions
-- Sample filename best practice script and excerpt from AWS official docs
+- Sample of filename best practice script and excerpt from AWS official docs
 
 ![Sample filename best practice excerpt from AWS official docs](./images/sample_naming_convention_official_aws_doc.png).
 
-- Also, below image is the generated partitoned file in bucket using the sample script:
+- Also, below image is the generated partitioned file in bucket using the sample script:
 
 ```
 input_df.write \
@@ -143,28 +143,28 @@ input_df.write \
 ```
 ![Sample filename in custom S3 bucket](./images/sample_sourcebucket_naming.png)
 
-- Sample S3 bucket, my custom bucket `bronze-cctransaction-example` and dedicated databricks S3 bucket
--- the dedicated S3 bucket is auto created when first initialize teh service. It is created with help of AWS CloudFormation which create like a cluster of service require for running databricks including ec2 instance, dedicated virtual private cloud (VPC), S3 bucket for databricks allocatted configuration and for unity catalog and also IAM policy
+- Sample S3 bucket, my custom bucket `bronze-cctransaction-example` and dedicated Databricks S3 bucket
+-- the dedicated S3 bucket is auto created when first initialize the service. It is created with help of AWS CloudFormation which create like a cluster of service require for running Databricks including ec2 instance, dedicated virtual private cloud (VPC), S3 bucket for Databricks allocated configuration and for unity catalog and also IAM policy
 
-![S3 bucket creation](./images/sample_bucket_autocreate_databricks.png)
+![S3 bucket creation](./images/sample_bucket_autocreate_Databricks.png)
 
 2. Databricks Integration
-- Sample script and check on mounting custom S3 bucket on databricks 
+- Sample script and check on mounting custom S3 bucket on Databricks 
 
-![mount S3 bucket on databricks](./images/mount_s3_to_databricks_code.png)
+![mount S3 bucket on Databricks](./images/mount_s3_to_Databricks_code.png)
 
-- Upload notebook / script into databricks' workspace
+- Upload notebook / script into Databricks' workspace
 
-![Upload script into databricks workspace ](./images/sample_attached_script_databricks.png)
+![Upload script into Databricks workspace ](./images/sample_attached_script_Databricks.png)
 
-- Sample read custom mounted S3 bucket in databricks workspace
+- Sample read custom mounted S3 bucket in Databricks workspace
 
 ![read custom S3 bucket after mount ](./images/sample_readparquet_in_S3.png)
 
-3. Medallion Architecture in databricks
+3. Medallion Architecture in Databricks
 - the materialized dbt model will turn as table alongside its dedicated schema
 
-![Medallion Architecture in databricks ](./images/file_structure_databricks_medallion_layer.png)
+![Medallion Architecture in Databricks ](./images/file_structure_Databricks_medallion_layer.png)
 
 4. dbt Project Structure and Configuration
 - Sample of a new dbt project file structure. Some important folder and files are:
@@ -204,19 +204,19 @@ databrick_dbt:
   target: dev
   outputs:
     dev:
-      type: databricks
-      host: "{{ env_var('DATABRICKS_HOST') }}"
-      http_path: "{{ env_var('DATABRICKS_HTTP_PATH') }}"
+      type: Databricks
+      host: "{{ env_var('Databricks_HOST') }}"
+      http_path: "{{ env_var('Databricks_HTTP_PATH') }}"
       schema: "dev"
-      token: "{{ env_var('DATABRICKS_TOKEN') }}"
+      token: "{{ env_var('Databricks_TOKEN') }}"
       threads: 1
-      database: "s3_databricks_dbt"
+      database: "s3_Databricks_dbt"
 ```
 - dbt_project.yml : define default materialization,file format and schema of model and even store variable here. Excerpt:
 ```
 models:
   databrick_dbt:
-    +database: s3_databricks_dbt
+    +database: s3_Databricks_dbt
     bronze:
       +schema: bronze
       +materialized: table
@@ -224,11 +224,11 @@ models:
 ```
 ![dbt project filestructure](./images/sample_dbt_file_structure.png)
 
-- Sample required connection setting for configuration of dbt-databricks adapter
+- Sample required connection setting for configuration of dbt-Databricks adapter
 
-![dbt-databricks adapter config ](./images/sample_databricks_menu_and_connection.png)
+![dbt-Databricks adapter config ](./images/sample_Databricks_menu_and_connection.png)
 
-- Sample testing dbt adapter connection to databricks
+- Sample testing dbt adapter connection to Databricks
 -- see in image below the connection is successfully done
 
 ![dbt debug ](./images/sample_dbt_debug_log.png)
@@ -238,19 +238,19 @@ models:
 ![dbt run log ](./images/sample_dbt_run_log.png)
 
 5. Data Lineage and Documentation
-- Sample filename save in databricks' govern S3 bucket
--- the dbt model is materialzed with partition on year, month and day
+- Sample filename save in Databricks' govern S3 bucket
+-- the dbt model is materialized with partition on year, month and day
 
-![Sample filename unity catalog partitioned](./images/sample_databricks_filename_unitcatalog_partitioned.png)
+![Sample filename unity catalog partitioned](./images/sample_Databricks_filename_unitcatalog_partitioned.png)
 
--- another reference is below image, where in unity catalog, the table is stored with random name under file path 'tables' followed by its partiton order. I.e., tables/0x312ncvkf/year=2020/month=01/day=01/part-0001-snappy.parquet
+-- another reference is below image, where in unity catalog, the table is stored with random name under file path 'tables' followed by its partition order. I.e., tables/0x312ncvkf/year=2020/month=01/day=01/part-0001-snappy.parquet
 
 ![Sample filename unity catalog](./images/sample_filename_in_unity_catalog.png)
 
 - Database, Schema and table structure from dbt docs
--- dbt provided nice file structure to all schema and tables created using materialize SQL/Python model.  Note that it represent the exact same structure as in file structure in databricks unity catalog
+-- dbt provided nice file structure to all schema and tables created using materialize SQL/Python model.  Note that it represents the exact same structure as in file structure in Databricks unity catalog
 
-![Database, Schema and table structure from dbt docs](./images/database_databricks_in_docs.png)
+![Database, Schema and table structure from dbt docs](./images/database_Databricks_in_docs.png)
 
 - Sample model/table dependency in dbt docs
 -- In image below, the landing data in silver layer act as prerequisite layer for staging (stg_customer,stg_location,stg_merchant, stg_transaction)
@@ -263,7 +263,7 @@ models:
 
 6. PowerBI Dashboard
 - Dashboard demo using PowerBI
--- i encompass teh dashboard into two section where the first is more on overvie of transaction data. User will get a brief idea on how well their service/institution is handling frud transaction. Overview alos helps to focus on region with top fraud instance for example. Then the second section provide the exception report which can be presented to higher ups or even as follow up to frontline on finding anremediation plan for fraud instances.
+-- i encompass the dashboard into two section where the first is more on overview of transaction data. User will get a brief idea on how well their service/institution is handling fraud transaction. Overview also helps to focus on region with top fraud instance for example. Then the second section provide the exception report which can be presented to higher ups or even as follow up to frontline on finding remediation plan for fraud instances.
 
 ![powerbi overview](./images/powerbi_overview.png)
 
@@ -271,7 +271,7 @@ models:
 
 7. Cost Monitoring
 - Sample cost monitoring using AWS `Billing and Cost Management` service
--- I have created a few budget alert to avoid unwanted spike cost / over budget
+-- I have created multiple budget alerts to avoid unwanted spike cost / over budget
 
 ![Budget Alert](./images/cost_monitoring.png)
 
@@ -279,10 +279,10 @@ models:
 1. Spark and AWS S3 Connection Setup
 - Challenge: Finding compatible versions of aws-java-sdk and hadoop-aws.
 - Solution: Identified the Java and Hadoop versions running on the notebook and selected compatible SDK versions.
-- Refrence materials here: [ref1](https://stackoverflow.com/questions/52310416/noclassdeffounderror-org-apache-hadoop-fs-streamcapabilities-while-reading-s3-d#:~:text=whatever%20version%20of%20the%20hadoop%2D%20JARs%20you%20have%20on%20your%20local%20spark%20installation%2C%20you%20need%20to%20have%20exactly%20the%20same%20version%20of%20hadoop%2Daws%2C%20and%20exactly%20the%20same%20version%20of%20the%20aws%20SDK%20which%20hadoop%2Daws%20was%20built%20with.%20Try%20mvnrepository%20for%20the%20details. )
+- Reference materials here: [ref1](https://stackoverflow.com/questions/52310416/noclassdeffounderror-org-apache-hadoop-fs-streamcapabilities-while-reading-s3-d#:~:text=whatever%20version%20of%20the%20hadoop%2D%20JARs%20you%20have%20on%20your%20local%20spark%20installation%2C%20you%20need%20to%20have%20exactly%20the%20same%20version%20of%20hadoop%2Daws%2C%20and%20exactly%20the%20same%20version%20of%20the%20aws%20SDK%20which%20hadoop%2Daws%20was%20built%20with.%20Try%20mvnrepository%20for%20the%20details. )
 2. AWS Region Service Connection
 - Challenge: It seems setting up compatible software is not enough. It is equally important to check if the s3 region needs extra configuration like enable region (I notice new region like my case `Kuala Lumpur` need to do this setup). 
-- Solution: Ensure to enable version is at latest postion
+- Solution: Ensure to enable version is at latest position
 ```
 -Dcom.amazonaws.services.s3.enableVx=true
 ```
@@ -290,28 +290,28 @@ models:
 - Challenge: Encountered storage limitations when creating clusters.
 - Solution: Refreshed and created new clusters as a workaround.
 4. Python Module Support in dbt
-- Challenge: this error occur when I try to use python model with locally hsot postgres
-- Solution: to solve it, there is only 4 services like Databricks, SNowflake compatible with python dbt model
+- Challenge: this error occur when I try to use python model with locally host postgres
+- Solution: to solve it, there is only 4 services like Databricks, Snowflake compatible with python dbt model
 5. File Naming in Medallion Architecture
-I want to implement different prefix to indicate the file is what medla layer or data mart. when I created table (mount my S3 in databricks workspace for example), databricks has its own way of filename creation for storing data. I found that it is due to unity catalog features.Below is sample naming from my custom S3 setup and auto created S3 in databricks (databricks data is managed by unity catalog causing not lenient/custom naming convention when saving table/data)
+I want to implement different prefix to indicate the file is what media layer or data mart. When I created table (mount my S3 in Databricks workspace for example), Databricks has its own way of filename creation for storing data. I found that it is due to unity catalog features. Below is sample naming from my custom S3 setup and auto created S3 in Databricks (Databricks data is managed by unity catalog causing not lenient/custom naming convention when saving table/data)
 
 ```
 Desired S3: bronze-cctransaction-example.s3.ap-southeast-5.amazonaws.com/mongo/ap-southeast-5/creditcard_trx/bronze/year=2020/month=01/day=01/part-00000-.gz.parquet
 
-Databricks S3: s3://s3-databricks-dbt-stack-bucket/unity-catalog/3559579205239172/__unitystorage/catalogs/810fd750-cd69-44f2-b91e-a6c14cde8fd9/tables/6e6f9b96-8755-4ab1-b2b4-e1276077bf57
+Databricks S3: s3://s3-Databricks-dbt-stack-bucket/unity-catalog/3559579205239172/__unitystorage/catalogs/810fd750-cd69-44f2-b91e-a6c14cde8fd9/tables/6e6f9b96-8755-4ab1-b2b4-e1276077bf57
 ```
 
-I have thought about three possible workaround to this problem:
+I have thought about three possible workarounds to this problem:
 - option 1 - do every transformation in dbt
--- benefit - utilize storage in databricks environment
-although filename almost not human readable, it can be considered as different layer as S3 treated file as object
-i also manuever the data to see if i have control and it looks like i can still managed the encryption key type, Lifecyle and other governance thingy
-- option 2 - create external table in databricks. I have googled and some folks said to use 'location_root' in dbt model's config. It means that the 'location_root' specify will be save file changes. 
+-- benefit - utilize storage in Databricks environment
+although filename almost not human readable, it can be considered as different layer as S3 treated file as object.
+I also explored the bucket in Databricks to see if i have control and it looks like i can still managed the encryption key type, Lifecyle and other governance thingy
+- option 2 - create external table in Databricks. I have googled and some folks said to use 'location_root' in dbt model's config. It means that the 'location_root' specify will be save file changes. 
 -- benefit - i can managed the naming prefix at specified store location
-- option 3 - use databricks workspace with only pyspark with no dbt.
+- option 3 - use Databricks workspace with only pyspark with no dbt.
 -- benefit - I can easily write in custom name and place for storage
 
-For this project, I selected the first option as I would like to utilize databricks and dbt to upmost possible. Although the filenaming is predetermined by unity catalog, I believe as table/materialzed is stored as different
+For this project, I selected the first option as I would like to utilize Databricks and dbt to upmost possible. Although the file naming is predetermined by unity catalog, I believe as table/materialized is stored as different
 object, it is still in accordance to medallion layer
 
 ## 🎓 Conclusion
