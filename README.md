@@ -125,7 +125,7 @@ PowerBI is employed for data visualization. The implemented dashboard provides a
 - It is essential to setup a model as the final gold layer depends very much on this design. Generally, for a fact table, it usually contain all measurements by stakeholder interest (usually datatype is continuous). For dimension tables, it is descriptive of what the attribute in fact table is all about.
 - In this project, I have lay out few potential business questions to start constructing the fact table and created the star schema model below. Refer [Sample_business_requirement.pdf](./Sample_business_requirement.pdf) for guidance on how I select fact dimension using business key metrics.
 
-[star schema](./images/star_schema_powerbi.png)
+![star schema](./images/star_schema_powerbi.png)
 
 1. S3 Bucket Setup and Naming Conventions
 - Sample filename best practice script and excerpt from AWS official docs
