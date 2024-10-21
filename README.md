@@ -15,10 +15,10 @@ OLAP is particularly suited for this scenario as it prioritizes fast querying an
 
 ## 📚 Contents
 
-- [The Dataset](#the-dataset)
-- [Project Architecture](#project-architecture)
-- [Transaction Batch Processing Pipeline](#transaction-batch-processing-pipeline)
-- [Project Demo Highlights](#project-demo-highlights)
+- [The Dataset](#-the-dataset)
+- [Project Architecture](#-project-architecture)
+- [Transaction Batch Processing Pipeline](#-transaction-batch-processing-pipeline)
+- [Project Demo Highlights](#-project-demo-highlights)
 - [Technical Challenges and Solutions](#-technical-challenges-and-solutions)
 - [Conclusion](#-conclusion)
 - [Future Enhancements](#-future-enhancements)
