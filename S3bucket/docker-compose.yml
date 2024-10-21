@@ -1,0 +1,33 @@
+version: "3"
+services:
+
+  spark:
+    image: 'jupyter/pyspark-notebook:spark-2'
+    ports:
+      - '8888:8888'
+      - "4040-4080:4040-4080"
+    env_file: 
+      - ../.env
+    volumes:
+      - your_volume_location
+    networks:
+      - document-streaming
+
+  mongo:
+    container_name: mongo-dev
+    image: mongo:your_mongo_version
+    volumes:
+      - your_volume_location
+    restart: on-failure
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: auth
+    networks:
+      - document-streaming
+
+networks:
+  document-streaming:
+    driver: bridge
