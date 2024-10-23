@@ -87,7 +87,7 @@ Spark processing is utilized in two key areas:
 
 - Spark runs in dockerized mode to extract data from MongoDB and transfer it to the S3 bucket.
 - The process with sample script in [mongo_to_spark_to_s3.ipynb](./S3bucket/ApacheSpark/mongo_to_spark_to_s3.ipynb).
-- After data migration, Databricks is set up and the S3 storage is mounted in the Databricks workspace using [setup_s3_conn.py](./Databricks/setup_s3_conn.py)
+- After data migration, Databricks is set up and the S3 storage is mounted in the Databricks workspace using [setup_s3_conn.py](./databricks/setup_s3_conn.py)
 
 Key points:
 - ensure to have matching JAR package file for Spark-AWS S3 connection
@@ -146,16 +146,16 @@ input_df.write \
 - Sample S3 bucket, my custom bucket `bronze-cctransaction-example` and dedicated Databricks S3 bucket
 -- the dedicated S3 bucket is auto created when first initialize the service. It is created with help of AWS CloudFormation which create like a cluster of service require for running Databricks including ec2 instance, dedicated virtual private cloud (VPC), S3 bucket for Databricks allocated configuration and for unity catalog and also IAM policy
 
-![S3 bucket creation](./images/sample_bucket_autocreate_Databricks.png)
+![S3 bucket creation](./images/sample_bucket_autocreate_databricks.png)
 
 2. Databricks Integration
 - Sample script and check on mounting custom S3 bucket on Databricks 
 
-![mount S3 bucket on Databricks](./images/mount_s3_to_Databricks_code.png)
+![mount S3 bucket on Databricks](./images/mount_s3_to_databricks_code.png)
 
 - Upload notebook / script into Databricks' workspace
 
-![Upload script into Databricks workspace ](./images/sample_attached_script_Databricks.png)
+![Upload script into Databricks workspace ](./images/sample_attached_script_databricks.png)
 
 - Sample read custom mounted S3 bucket in Databricks workspace
 
@@ -164,7 +164,7 @@ input_df.write \
 3. Medallion Architecture in Databricks
 - the materialized dbt model will turn as table alongside its dedicated schema
 
-![Medallion Architecture in Databricks ](./images/file_structure_Databricks_medallion_layer.png)
+![Medallion Architecture in Databricks ](./images/file_structure_databricks_medallion_layer.png)
 
 4. dbt Project Structure and Configuration
 - Sample of a new dbt project file structure. Some important folder and files are:
@@ -226,7 +226,7 @@ models:
 
 - Sample required connection setting for configuration of dbt-Databricks adapter
 
-![dbt-Databricks adapter config ](./images/sample_Databricks_menu_and_connection.png)
+![dbt-Databricks adapter config ](./images/sample_databricks_menu_and_connection.png)
 
 - Sample testing dbt adapter connection to Databricks
 -- see in image below the connection is successfully done
@@ -241,7 +241,7 @@ models:
 - Sample filename save in Databricks' govern S3 bucket
 -- the dbt model is materialized with partition on year, month and day
 
-![Sample filename unity catalog partitioned](./images/sample_Databricks_filename_unitcatalog_partitioned.png)
+![Sample filename unity catalog partitioned](./images/sample_databricks_filename_unitcatalog_partitioned.png)
 
 -- another reference is below image, where in unity catalog, the table is stored with random name under file path 'tables' followed by its partition order. I.e., tables/0x312ncvkf/year=2020/month=01/day=01/part-0001-snappy.parquet
 
@@ -250,7 +250,7 @@ models:
 - Database, Schema and table structure from dbt docs
 -- dbt provided nice file structure to all schema and tables created using materialize SQL/Python model.  Note that it represents the exact same structure as in file structure in Databricks unity catalog
 
-![Database, Schema and table structure from dbt docs](./images/database_Databricks_in_docs.png)
+![Database, Schema and table structure from dbt docs](./images/database_databricks_in_docs.png)
 
 - Sample model/table dependency in dbt docs
 -- In image below, the landing data in silver layer act as prerequisite layer for staging (stg_customer,stg_location,stg_merchant, stg_transaction)
