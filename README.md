@@ -1,17 +1,27 @@
-# 📊 Building a Scalable OLAP System for Credit Card Transaction Analysis
+# 💼 Scalable OLAP System for Credit Card Transaction Analysis
 
-## 🌟 Introduction
-This project is a continuation of my previous work on creating a transactional storage (MongoDB) for credit card data using an OLTP approach. The current focus is on building an OLAP (Online Analytical Processing) system and creating a data warehouse for downstream users.
+## 🌟 Overview
+This project extends my earlier work on transactional storage (using MongoDB in an OLTP setting) and focuses on building an OLAP system for in-depth analysis of credit card transactions. It involves creating a scalable data warehouse using cloud technologies and modern data engineering practices, designed to provide stakeholders with fast, actionable insights.
 
-🎯 Main Objectives:
-1. Construct an OLAP data warehouse by loading data into cloud-distributed storage through various data staging processes.
-2. Implement a star schema, a common data model in OLAP systems, by designing fact and dimension tables tailored to business requirements.
-3. Gain hands-on experience with modern data engineering solutions like Databricks and dbt to expand my skillset as an aspiring data engineer.
+🔑 Key Takeaways:
 
-🏢 Scenario:
-In financial institutions and service providers, effective data democratization is crucial for driving organizational direction and goals through data-driven solutions. This requires a well-designed system that caters to stakeholder needs. Ideally, every department should be able to integrate and customize the data solution (in this case, the data warehouse) by creating specific departmental data marts.
+1. Hands-on experience with AWS S3, Databricks, dbt, and PowerBI.
+2. Implementation of Star Schema for OLAP dimensional data modeling.
+3. End-to-end data engineering solution from data extraction to visualization.
 
-OLAP is particularly suited for this scenario as it prioritizes fast querying and analytical use cases. Implementing a star schema model further specializes the data warehouse to answer business questions through tailored fact models and related descriptive data in dimension models.
+## 🎯 Objectives:
+1. 🏗️ Build a scalable OLAP data warehouse using cloud-distributed storage and data staging techniques.
+2. 📊 Design fact and dimension tables following a star schema, optimized for fast querying and analytical tasks.
+3. 🛠️ Gain Expertise with cutting-edge tools like Databricks, dbt, and Spark for efficient data processing and transformation.
+
+## 🏢 Use Case: Financial Institution
+Financial institutions rely on effective data democratization to make data-driven decisions across departments. This OLAP system allows for tailored data marts, empowering each department with access to customized insights through the data warehouse.
+
+OLAP is the ideal solution here, offering:
+
+1. 💡 Rapid Queries for large datasets.
+2. 📂 Organized Data through dimensional modeling, answering key business questions.
+3. 📈 Star Schema to facilitate easy reporting and analytics.
 
 ## 📚 Contents
 
@@ -68,6 +78,7 @@ The data processing pipeline consists of four main phases:
 4. Visualization 📈: Tools analyze and display the processed data, enabling data-driven reporting based on organizational needs.
 
 ## 🔄 Transaction Batch Processing Pipeline
+The batch pipeline highlights the integration of OLTP and OLAP systems. It starts by extracting data from MongoDB, processing it using Spark, and loading it into S3 for further OLAP operations.
 
 ![Transaction Batch Process Architecture](./images/OLTP_OLAP_Pipeline_Overview.jpg)
 
@@ -108,7 +119,7 @@ docker run --env-file /home/user/config/.env -p 8888:8888 -p 4040-4080:4040-4080
 2. dbt + Spark (in Databricks):
 
 dbt (data build tool) is used to plan and execute transformations in a DAG (Directed Acyclic Graph) manner within the Databricks lakehouse.
-dbt's built-in documentation feature provides visibility into data lineage, enhancing collaboration and preventing redundant transformations.
+dbt's built-in documentation features provides visibility into data lineage, enhancing collaboration and preventing redundant transformations.
 The transformation process creates three schemas (bronze, silver, and gold) following a medallion architecture, with the gold layer containing tables in a star schema format.
 Resulting tables in each schema are saved in the Databricks-provisioned S3 bucket.
 
@@ -121,8 +132,8 @@ PowerBI is used for data visualization. The implemented dashboard provides a com
 
 ## 🪧Project Demo Highlights
 
-0. Data Model Setup
-- It is essential to setup a model as the final gold layer depends very much on this design. Generally, for a fact table, it usually contains all measurements by stakeholder interest (usually datatype is type of continuous numerical data). For dimension tables, it is descriptive of what the attribute in fact table is all about.
+0. Data Model / Star Schema Design
+- It is essential to setup a model as the final gold layer and I have selected a star schema model for this dimensional modeling task. Generally, for a fact table, it usually contains all measurements by stakeholder interest (usually datatype is type of continuous numerical data). For dimension tables, it is descriptive of what the attribute in fact table is all about.
 - In this project, I have proposed potential business questions to start constructing the fact table and created the star schema model below. Refer [Sample_business_requirement.pdf](./Sample_business_requirement.pdf) for guidance on how I select fact dimension using business key metrics.
 
 ![star schema](./images/star_schema_powerbi.png)
@@ -144,7 +155,7 @@ input_df.write \
 ![Sample filename in custom S3 bucket](./images/sample_sourcebucket_naming.png)
 
 - Sample S3 bucket, my custom bucket `bronze-cctransaction-example` and dedicated Databricks S3 bucket
--- the dedicated S3 bucket is auto created when first initialize the service. It is created with help of AWS CloudFormation which create like a cluster of service require for running Databricks including ec2 instance, dedicated virtual private cloud (VPC), S3 bucket for Databricks allocated configuration and for unity catalog and also IAM policy
+-- the dedicated S3 bucket is auto created when first initialize the service. It is created with help of AWS CloudFormation which create like a cluster of service require for running Databricks including ec2 instance, dedicated virtual private cloud (VPC), S3 bucket for Databricks allocated configuration and also IAM policy
 
 ![S3 bucket creation](./images/sample_bucket_autocreate_databricks.png)
 
@@ -167,7 +178,7 @@ input_df.write \
 ![Medallion Architecture in Databricks ](./images/file_structure_databricks_medallion_layer.png)
 
 4. dbt Project Structure and Configuration
-- Sample of a new dbt project file structure. Some important folder and files are:
+a. Sample of a new dbt project file structure. Some important folder and files are:
 - models : where all the transformation script for medallion layer is placed. Each script might include a schema.yml script that configure testing of data quality, brief column description etc.
 
 example sql model script:
@@ -263,7 +274,7 @@ models:
 
 6. PowerBI Dashboard
 - Dashboard demo using PowerBI
--- i encompass the dashboard into two section where the first is more on overview of transaction data. User will get a brief idea on how well their service/institution is handling fraud transaction. Overview also helps to focus on region with top fraud instance for example. Then the second section provide the exception report which can be presented to higher ups or even as follow up to frontline on finding remediation plan for fraud instances.
+-- I divided the dashboard into two sections. The first section offers an overview of transaction data, giving users a quick insight into how effectively their service or institution is managing fraud cases. This overview also highlights regions with the highest instances of fraud. The second section presents an exception report, which can be shared with senior management or used by frontline teams to develop remediation strategies for fraud incidents.
 
 ![powerbi overview](./images/powerbi_overview.png)
 
@@ -281,19 +292,21 @@ models:
 - Solution: Identified the Java and Hadoop versions running on the notebook and selected compatible SDK versions.
 - Reference materials here: [ref1](https://stackoverflow.com/questions/52310416/noclassdeffounderror-org-apache-hadoop-fs-streamcapabilities-while-reading-s3-d#:~:text=whatever%20version%20of%20the%20hadoop%2D%20JARs%20you%20have%20on%20your%20local%20spark%20installation%2C%20you%20need%20to%20have%20exactly%20the%20same%20version%20of%20hadoop%2Daws%2C%20and%20exactly%20the%20same%20version%20of%20the%20aws%20SDK%20which%20hadoop%2Daws%20was%20built%20with.%20Try%20mvnrepository%20for%20the%20details. )
 2. AWS Region Service Connection
-- Challenge: It seems setting up compatible software is not enough. It is equally important to check if the s3 region needs extra configuration like enable region (I notice new region like my case `Kuala Lumpur` need to do this setup). 
-- Solution: Ensure to enable version is at latest position
+- Challenge: It appears that simply setting up compatible software is insufficient. It's also crucial to verify whether the S3 region requires additional configurations, such as enabling the region (I noticed that for new regions like `Kuala Lumpur`, this setup is necessary).
+- Solution: Make sure to enable the version at the latest position.
 ```
 -Dcom.amazonaws.services.s3.enableVx=true
+
+where x is the latest version
 ```
 3. Insufficient Compute Storage in Databricks
 - Challenge: Encountered storage limitations when creating clusters.
 - Solution: Refreshed and created new clusters as a workaround.
 4. Python Module Support in dbt
-- Challenge: this error occur when I try to use python model with locally host postgres
-- Solution: to solve it, there is only 4 services like Databricks, Snowflake compatible with python dbt model
+- Challenge: an error occured when I try to use python model with locally host postgres
+- Solution: to solve it, there is only 4 services like Databricks, Snowflake compatible with python dbt model. so, it is not possible to use ptyhon dbt model on postgres yet.
 5. File Naming in Medallion Architecture
-I want to implement different prefix to indicate the file is what media layer or data mart. When I created table (mount my S3 in Databricks workspace for example), Databricks has its own way of filename creation for storing data. I found that it is due to unity catalog features. Below is sample naming from my custom S3 setup and auto created S3 in Databricks (Databricks data is managed by unity catalog causing not lenient/custom naming convention when saving table/data)
+I would like to use different prefixes to indicate which media layer or data mart the file belongs to. For instance, when I create a table by mounting my S3 in the Databricks workspace, Databricks automatically generates filenames for storing data. I discovered that this is a result of the Unity Catalog features. Below is a comparison of naming conventions from my custom S3 setup and the automatically created S3 in Databricks (where the data managed by the Unity Catalog does not allow for flexible or customized naming conventions when saving tables or data).
 
 ```
 Desired S3: bronze-cctransaction-example.s3.ap-southeast-5.amazonaws.com/mongo/ap-southeast-5/creditcard_trx/bronze/year=2020/month=01/day=01/part-00000-.gz.parquet
@@ -301,18 +314,18 @@ Desired S3: bronze-cctransaction-example.s3.ap-southeast-5.amazonaws.com/mongo/a
 Databricks S3: s3://s3-Databricks-dbt-stack-bucket/unity-catalog/3559579205239172/__unitystorage/catalogs/810fd750-cd69-44f2-b91e-a6c14cde8fd9/tables/6e6f9b96-8755-4ab1-b2b4-e1276077bf57
 ```
 
-I have thought about three possible workarounds to this problem:
-- option 1 - do every transformation in dbt
--- benefit - utilize storage in Databricks environment
-although filename almost not human readable, it can be considered as different layer as S3 treated file as object.
-I also explored the bucket in Databricks to see if i have control and it looks like i can still managed the encryption key type, Lifecyle and other governance thingy
-- option 2 - create external table in Databricks. I have googled and some folks said to use 'location_root' in dbt model's config. It means that the 'location_root' specify will be save file changes. 
--- benefit - i can managed the naming prefix at specified store location
-- option 3 - use Databricks workspace with only pyspark with no dbt.
--- benefit - I can easily write in custom name and place for storage
+I have considered three potential workarounds for this issue:
 
-For this project, I selected the first option as I would like to utilize Databricks and dbt to upmost possible. Although the file naming is predetermined by unity catalog, I believe as table/materialized is stored as different
-object, it is still in accordance to medallion layer
+- Option 1: Perform all transformations in dbt.
+    - Benefit: This approach allows me to utilize storage within the Databricks environment. Although the filenames may not be very human-readable, they can still be categorized as different layers, as S3 treats files as objects. I also investigated the bucket in Databricks and found that I can manage aspects such as the encryption key type, lifecycle, and other governance features.
+
+- Option 2: Create an external table in Databricks. I researched this and found that some people recommend using 'location_root' in the dbt model's configuration. This means that the specified 'location_root' will dictate where the file changes are saved.
+    - Benefit: This allows me to control the naming prefix at the specified storage location.
+
+- Option 3: Use the Databricks workspace with only PySpark, without dbt.
+    - Benefit: This gives me the flexibility to write custom names and choose the storage location easily.
+
+For this project, I have chosen the first option, as I want to maximize the use of Databricks and dbt. While the file naming is determined by the Unity Catalog, I believe that since tables/materialized views are stored as different objects, they still align with the medallion layer structure.
 
 ## 🎓 Conclusion
 This OLAP system for credit card transaction analysis demonstrates a robust, scalable approach to handling large volumes of financial data. By leveraging cloud technologies like AWS S3 and Databricks, combined with modern data transformation tools like dbt, we've created a powerful analytical platform capable of providing valuable insights into transaction patterns and potential fraudulent activities.
