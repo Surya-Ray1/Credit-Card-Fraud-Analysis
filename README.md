@@ -3,7 +3,7 @@
 ## 🌟 Overview
 This project extends my earlier work on transactional storage (using MongoDB in an OLTP setting) and focuses on building an OLAP system for in-depth analysis of credit card transactions. It involves creating a scalable data warehouse using cloud technologies and modern data engineering practices, designed to provide stakeholders with fast, actionable insights.
 
-🔑 Key Takeaways:
+🔑 Key Takeaways: 
 
 1. Hands-on experience with AWS S3, Databricks, dbt, and PowerBI.
 2. Implementation of Star Schema for OLAP dimensional data modeling.
